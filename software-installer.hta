@@ -60,7 +60,7 @@
     <script language="VBScript">
 
         ' Set window size '
-        window.resizeTo 800, 350
+        window.resizeTo 900, 425
 
         ' If toolkit is not running with elevated permissions, self elevate '
         If HTAElevate() = True Then 
@@ -102,6 +102,20 @@
         Function downloadFile(ByRef link, ByRef name)
             MsgBox(link)
             MsgBox(name)
+
+            const waitUntilFinished = true, dontShowWindow = 0, folderPath = "%localappdata%\StaplesTech\Installers\"
+            dim downloader, folderCheck
+
+            set objShell = CreateObject("Wscript.Shell")
+            
+            folderCheck = "if not exist " & folderPath & " ( mkdir " & folderPath & " & echo " & folderPath & " created)"
+            MsgBox(folderCheck)
+
+            downloader = "PowerShell -NoProfile -Command " & Chr(34) & "(New-Object Net.WebClient).DownloadFile('" & link & "', '" & folderPath & name & "')" & Chr(34)
+            MsgBox(downloader) ' Output command for testing '
+
+
+            objShell.Run "cmd /c " & folderCheck & " & " & command & " & echo. & pause"
         End Function
 
         ' Runs the installer '
